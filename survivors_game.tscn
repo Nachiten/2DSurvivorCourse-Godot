@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=6 format=3 uid="uid://nc81yx2coj0l"]
 
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://player.tscn" id="1_jv7np"]
 [ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://pine_tree.tscn" id="2_c5nw3"]
+[ext_resource type="PackedScene" uid="uid://dtruuj6td4lv6" path="res://mob.tscn" id="3_15skv"]
 
 [sub_resource type="FontFile" id="FontFile_0swby"]
 cache/0/16/0/ascent = 0.0
@@ -8936,13 +8937,17 @@ font_size = 50
 
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
+position = Vector2(-3, 0)
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -30
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 offset_right = 1969.0
 offset_bottom = 1124.0
 
 [node name="Player" parent="." instance=ExtResource("1_jv7np")]
-position = Vector2(903, 548)
+position = Vector2(940, 570)
 
 [node name="PineTree" parent="." instance=ExtResource("2_c5nw3")]
 position = Vector2(1527, 373)
@@ -8954,7 +8959,7 @@ position = Vector2(147, 195)
 position = Vector2(266, 870)
 
 [node name="PineTree4" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(1560, 730)
+position = Vector2(1541, 904)
 
 [node name="PineTree5" parent="." instance=ExtResource("2_c5nw3")]
 position = Vector2(317, 529)
@@ -8966,10 +8971,13 @@ position = Vector2(572, 853)
 position = Vector2(505, 272)
 
 [node name="PineTree8" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(588, 313)
+position = Vector2(621, 299)
 
 [node name="PineTree9" parent="." instance=ExtResource("2_c5nw3")]
 position = Vector2(505, 353)
+
+[node name="PineTree10" parent="." instance=ExtResource("2_c5nw3")]
+position = Vector2(1748, 526)
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(0, 0, 0, 1)
@@ -8979,3 +8987,18 @@ offset_right = 2278.0
 offset_bottom = 136.0
 text = "Visto hasta: 45:41"
 label_settings = SubResource("LabelSettings_jgfh0")
+
+[node name="Mob" parent="." instance=ExtResource("3_15skv")]
+position = Vector2(1188, 751)
+
+[node name="Mob2" parent="." instance=ExtResource("3_15skv")]
+position = Vector2(1590, 587)
+
+[node name="Mob3" parent="." instance=ExtResource("3_15skv")]
+position = Vector2(1685, 223)
+
+[node name="Mob4" parent="." instance=ExtResource("3_15skv")]
+position = Vector2(115, 651)
+
+[node name="Mob5" parent="." instance=ExtResource("3_15skv")]
+position = Vector2(329, 154)
