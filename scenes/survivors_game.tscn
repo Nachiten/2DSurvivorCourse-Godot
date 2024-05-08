@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=6 format=3 uid="uid://nc81yx2coj0l"]
 
-[ext_resource type="Script" path="res://survivors_game.gd" id="1_as1ga"]
-[ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://player.tscn" id="1_jv7np"]
-[ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://pine_tree.tscn" id="2_c5nw3"]
+[ext_resource type="Script" path="res://scripts/survivors_game.gd" id="1_as1ga"]
+[ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
+[ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://scenes/pine_tree.tscn" id="2_c5nw3"]
+[ext_resource type="Script" path="res://scripts/FPSLabel.gd" id="4_g6miw"]
 
 [sub_resource type="Curve2D" id="Curve2D_3qdtj"]
 _data = {
@@ -71,11 +72,11 @@ position = Vector2(1748, 491)
 wait_time = 0.3
 autostart = true
 
-[node name="GameOver" type="CanvasLayer" parent="."]
+[node name="GameOverCanvas" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 visible = false
 
-[node name="ColorRect" type="ColorRect" parent="GameOver"]
+[node name="ColorRect" type="ColorRect" parent="GameOverCanvas"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -83,7 +84,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="Label" type="Label" parent="GameOver/ColorRect"]
+[node name="GameOverLabel" type="Label" parent="GameOverCanvas/ColorRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -101,6 +102,17 @@ text = "Game Over!!!
 You lost :("
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="FPSCanvas" type="CanvasLayer" parent="."]
+
+[node name="FPSLabel" type="Label" parent="FPSCanvas"]
+offset_left = 1773.0
+offset_top = 47.0
+offset_right = 1882.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "ASDASDADSW"
+script = ExtResource("4_g6miw")
 
 [connection signal="health_depleted" from="Player" to="." method="_on_player_health_depleted"]
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_timer_timeout"]
