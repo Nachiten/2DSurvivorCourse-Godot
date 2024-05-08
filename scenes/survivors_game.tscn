@@ -13,7 +13,7 @@ point_count = 5
 
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
-position = Vector2(-3, 0)
+position = Vector2(9, 15)
 script = ExtResource("1_as1ga")
 
 [node name="BackgroundCanvas" type="CanvasLayer" parent="."]
