@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 func spawn_mob():
 	var new_mob = preload("res://scenes/mob.tscn").instantiate()
@@ -7,9 +7,5 @@ func spawn_mob():
 	new_mob.global_position = %EnemySpawnPathFollow.global_position
 	add_child(new_mob)
 
-func _on_timer_timeout():
+func _on_enemy_spawn_timer_timeout():
 	spawn_mob()
-
-func _on_player_health_depleted():
-	%GameOverCanvas.visible = true
-	get_tree().paused = true

@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=8 format=3 uid="uid://nc81yx2coj0l"]
 
-[ext_resource type="Script" path="res://scripts/survivors_game.gd" id="1_as1ga"]
+[ext_resource type="Script" path="res://scripts/mob_spawner.gd" id="1_as1ga"]
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
 [ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://scenes/pine_tree.tscn" id="2_c5nw3"]
-[ext_resource type="Script" path="res://scripts/FPSLabel.gd" id="4_g6miw"]
+[ext_resource type="Script" path="res://scenes/game_manager.gd" id="2_gfc07"]
+[ext_resource type="Script" path="res://scripts/fps_label.gd" id="4_g6miw"]
+[ext_resource type="Script" path="res://scenes/bullets-label.gd" id="6_p6o6b"]
 
 [sub_resource type="Curve2D" id="Curve2D_3qdtj"]
 _data = {
@@ -14,7 +16,16 @@ point_count = 5
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
 position = Vector2(9, 15)
+
+[node name="MobSpawner" type="Node" parent="."]
 script = ExtResource("1_as1ga")
+
+[node name="EnemySpawnTimer" type="Timer" parent="MobSpawner"]
+wait_time = 0.3
+autostart = true
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_gfc07")
 
 [node name="BackgroundCanvas" type="CanvasLayer" parent="."]
 layer = -30
@@ -68,10 +79,6 @@ position = Vector2(505, 358)
 [node name="PineTree10" parent="." instance=ExtResource("2_c5nw3")]
 position = Vector2(1748, 491)
 
-[node name="EnemySpawnTimer" type="Timer" parent="."]
-wait_time = 0.3
-autostart = true
-
 [node name="GameOverCanvas" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -114,5 +121,20 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "ASDASDADSW"
 script = ExtResource("4_g6miw")
 
-[connection signal="health_depleted" from="Player" to="." method="_on_player_health_depleted"]
-[connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_timer_timeout"]
+[node name="BulletsCanvas" type="CanvasLayer" parent="."]
+
+[node name="BulletsLabel" type="Label" parent="BulletsCanvas"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 109.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "ASDASDADSW"
+script = ExtResource("6_p6o6b")
+
+[connection signal="timeout" from="MobSpawner/EnemySpawnTimer" to="MobSpawner" method="_on_enemy_spawn_timer_timeout"]
+[connection signal="health_depleted" from="Player" to="GameManager" method="_on_player_health_depleted"]

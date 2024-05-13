@@ -11,6 +11,16 @@ collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_d455x")
 
+[node name="CooldownTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.3
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true
+
 [node name="GunRange" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_j6f8v")
 
@@ -24,8 +34,5 @@ texture = ExtResource("1_4fm86")
 unique_name_in_owner = true
 position = Vector2(25, -11)
 
-[node name="ShootingTimer" type="Timer" parent="."]
-wait_time = 0.35
-autostart = true
-
-[connection signal="timeout" from="ShootingTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
