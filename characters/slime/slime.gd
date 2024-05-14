@@ -1,10 +1,10 @@
 extends Node2D
 
+@onready var animation_player = %AnimationPlayer
 
 func play_walk():
-	%AnimationPlayer.play("walk")
-
+	animation_player.play("walk")
 
 func play_hurt():
-	%AnimationPlayer.play("hurt")
-	%AnimationPlayer.queue("walk")
+	animation_player.play("hurt")
+	animation_player.queue("walk")

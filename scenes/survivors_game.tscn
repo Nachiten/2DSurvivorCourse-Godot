@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=9 format=3 uid="uid://nc81yx2coj0l"]
 
 [ext_resource type="Script" path="res://scripts/mob_spawner.gd" id="1_as1ga"]
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
 [ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://scenes/pine_tree.tscn" id="2_c5nw3"]
-[ext_resource type="Script" path="res://scenes/game_manager.gd" id="2_gfc07"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gfc07"]
 [ext_resource type="Script" path="res://scripts/fps_label.gd" id="4_g6miw"]
-[ext_resource type="Script" path="res://scenes/bullets-label.gd" id="6_p6o6b"]
+[ext_resource type="Script" path="res://scripts/game_over_canvas.gd" id="5_4moce"]
+[ext_resource type="Script" path="res://scripts/bullets_label.gd" id="6_p6o6b"]
 
 [sub_resource type="Curve2D" id="Curve2D_3qdtj"]
 _data = {
@@ -24,20 +25,10 @@ script = ExtResource("1_as1ga")
 wait_time = 0.3
 autostart = true
 
-[node name="GameManager" type="Node" parent="."]
+[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
 script = ExtResource("2_gfc07")
 
-[node name="BackgroundCanvas" type="CanvasLayer" parent="."]
-layer = -30
-
-[node name="Background" type="ColorRect" parent="BackgroundCanvas"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Player" parent="." instance=ExtResource("1_jv7np")]
+[node name="Player" parent="." groups=["player"] instance=ExtResource("1_jv7np")]
 position = Vector2(940, 570)
 
 [node name="EnemySpawnPath" type="Path2D" parent="Player"]
@@ -79,9 +70,21 @@ position = Vector2(505, 358)
 [node name="PineTree10" parent="." instance=ExtResource("2_c5nw3")]
 position = Vector2(1748, 491)
 
+[node name="Trees" type="Node" parent="."]
+
+[node name="BackgroundCanvas" type="CanvasLayer" parent="."]
+layer = -30
+
+[node name="Background" type="ColorRect" parent="BackgroundCanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="GameOverCanvas" type="CanvasLayer" parent="."]
-unique_name_in_owner = true
-visible = false
+layer = 2
+script = ExtResource("5_4moce")
 
 [node name="ColorRect" type="ColorRect" parent="GameOverCanvas"]
 anchors_preset = 15
@@ -137,4 +140,5 @@ text = "ASDASDADSW"
 script = ExtResource("6_p6o6b")
 
 [connection signal="timeout" from="MobSpawner/EnemySpawnTimer" to="MobSpawner" method="_on_enemy_spawn_timer_timeout"]
+[connection signal="game_lost" from="GameManager" to="GameOverCanvas" method="_on_game_manager_game_lost"]
 [connection signal="health_depleted" from="Player" to="GameManager" method="_on_player_health_depleted"]

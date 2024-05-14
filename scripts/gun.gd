@@ -7,6 +7,10 @@ var state = ShootState.READY
 var maxBullets = 10
 var bullets = maxBullets
 
+@onready var shooting_point : Node2D = %ShootingPoint
+@onready var reload_timer : Timer = %ReloadTimer
+@onready var cooldown_timer : Timer = %CooldownTimer
+
 func _ready():
 	resetBullets()
 
@@ -14,27 +18,26 @@ func _physics_process(_delta):
 	var mouseWorldPosition = get_global_mouse_position()
 	look_at(mouseWorldPosition)
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_pressed("primary_click") && isReady():
 		shoot()
 
 func shoot():
 	const BULLET = preload("res://scenes/bullet.tscn")
 	var new_bullet = BULLET.instantiate()
-	new_bullet.global_position = %ShootingPoint.global_position
-	new_bullet.global_rotation = %ShootingPoint.global_rotation
+	new_bullet.global_position = shooting_point.global_position
+	new_bullet.global_rotation = shooting_point.global_rotation
 
 	decreaseBullets()
 
 	if bullets == 0:
 		state = ShootState.RELOADING
-		%ReloadTimer.start()
+		reload_timer.start()
 	else:
 		state = ShootState.COOLDOWN
-		%CooldownTimer.start()
+		cooldown_timer.start()
 
-	%ShootingPoint.add_child(new_bullet)
-
+	shooting_point.add_child(new_bullet)
 
 func _on_cooldown_timer_timeout():
 	if isCooldown():
