@@ -1,6 +1,8 @@
 extends Area2D
 
-signal bulletsChanged(bulletsAmount)
+signal bullets_changed(bulletsAmount)
+signal reloading_started
+signal reloading_ended
 
 enum ShootState { READY, COOLDOWN, RELOADING }
 var state = ShootState.READY
@@ -33,6 +35,7 @@ func shoot():
 	if bullets == 0:
 		state = ShootState.RELOADING
 		reload_timer.start()
+		reloading_started.emit()
 	else:
 		state = ShootState.COOLDOWN
 		cooldown_timer.start()
@@ -46,14 +49,15 @@ func _on_cooldown_timer_timeout():
 func _on_reload_timer_timeout():
 	state = ShootState.READY
 	resetBullets()
+	reloading_ended.emit()
 
 func decreaseBullets():
 	bullets -= 1
-	bulletsChanged.emit(bullets)
+	bullets_changed.emit(bullets)
 
 func resetBullets():
 	bullets = maxBullets
-	bulletsChanged.emit(bullets)
+	bullets_changed.emit(bullets)
 
 func isReady():
 	return state == ShootState.READY
