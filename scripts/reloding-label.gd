@@ -1,6 +1,6 @@
 extends Label
 
-@onready var gun : Node2D = get_tree().get_first_node_in_group("gun")
+@onready var gun : Area2D = get_tree().get_first_node_in_group("gun")
 
 func _ready():
 	visible = false

@@ -24,9 +24,11 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("gun")]
 platform_floor_layers = 0
 script = ExtResource("1_eopgq")
+health = 112.605
+gun = NodePath("Gun")
 
 [node name="HappyBoo" parent="." instance=ExtResource("1_5msd7")]
 unique_name_in_owner = true
@@ -35,6 +37,7 @@ unique_name_in_owner = true
 shape = SubResource("CircleShape2D_k84ts")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.3, 0.3)
 
 [node name="Gun" parent="." groups=["gun"] instance=ExtResource("3_7u33q")]
 position = Vector2(0, -57)

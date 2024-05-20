@@ -3,6 +3,7 @@ extends Area2D
 signal bullets_changed(bulletsAmount)
 signal reloading_started
 signal reloading_ended
+signal rotated(degrees)
 
 enum ShootState { READY, COOLDOWN, RELOADING }
 var state = ShootState.READY
@@ -14,15 +15,23 @@ var bullets = maxBullets
 @onready var cooldown_timer : Timer = %CooldownTimer
 
 func _ready():
+	print("gun._ready")
 	resetBullets()
 
 func _physics_process(_delta):
 	var mouseWorldPosition = get_global_mouse_position()
 	look_at(mouseWorldPosition)
+	rotated.emit(rotation_degrees)
 
 func _process(_delta):
 	if Input.is_action_pressed("primary_click") && isReady():
 		shoot()
+
+	if Input.is_action_pressed("reload") && (isReady() || isCooldown()) && !isMaxBullets():
+		reload()
+
+func isMaxBullets():
+	return bullets == maxBullets
 
 func shoot():
 	const BULLET = preload("res://scenes/bullet.tscn")
@@ -33,14 +42,17 @@ func shoot():
 	decreaseBullets()
 
 	if bullets == 0:
-		state = ShootState.RELOADING
-		reload_timer.start()
-		reloading_started.emit()
+		reload()
 	else:
 		state = ShootState.COOLDOWN
 		cooldown_timer.start()
 
 	shooting_point.add_child(new_bullet)
+
+func reload():
+	state = ShootState.RELOADING
+	reload_timer.start()
+	reloading_started.emit()
 
 func _on_cooldown_timer_timeout():
 	if isCooldown():

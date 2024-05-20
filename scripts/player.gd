@@ -5,7 +5,11 @@ signal health_depleted
 const DAMAGE_RATE = 5.0
 const MOVE_VELOCITY = 600
 
-var health = 100.0
+@export var health = 100.0
+@export var gun: Area2D
+
+func _ready():
+	print("player._ready")
 
 func _physics_process(delta):
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")

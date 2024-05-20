@@ -1,21 +1,22 @@
-[gd_scene load_steps=10 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=11 format=3 uid="uid://nc81yx2coj0l"]
 
 [ext_resource type="Script" path="res://scripts/mob_spawner.gd" id="1_as1ga"]
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
 [ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://scenes/pine_tree.tscn" id="2_c5nw3"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gfc07"]
+[ext_resource type="Script" path="res://scripts/terrain_generator.gd" id="3_5wbav"]
 [ext_resource type="Script" path="res://scripts/fps_label.gd" id="4_g6miw"]
 [ext_resource type="Script" path="res://scripts/game_over_canvas.gd" id="5_4moce"]
 [ext_resource type="Script" path="res://scripts/bullets_label.gd" id="6_p6o6b"]
-[ext_resource type="Script" path="res://scenes/reloding-label.gd" id="8_47qkk"]
+[ext_resource type="Script" path="res://scripts/reloding-label.gd" id="8_47qkk"]
 
 [sub_resource type="Curve2D" id="Curve2D_3qdtj"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 2083, -106, 0, 0, 0, 0, 2085, 1263, 0, 0, 0, 0, -92, 1263, 0, 0, 0, 0, -93, -104, 0, 0, 0, 0, 2083, -106)
+"points": PackedVector2Array(0, 0, 0, 0, 2083, -106, 0, 0, 0, 0, 2085, 1263, 0, 0, 0, 0, -172.91, 1262.99, 0, 0, 0, 0, -173.91, -105.01, 0, 0, 0, 0, 2083, -106)
 }
 point_count = 5
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" groups=["root_scene"]]
 y_sort_enabled = true
 position = Vector2(9, 15)
 
@@ -24,52 +25,12 @@ script = ExtResource("1_as1ga")
 
 [node name="EnemySpawnTimer" type="Timer" parent="MobSpawner"]
 wait_time = 0.3
-autostart = true
 
 [node name="GameManager" type="Node" parent="." groups=["game_manager"]]
 script = ExtResource("2_gfc07")
 
-[node name="Player" parent="." groups=["player"] instance=ExtResource("1_jv7np")]
-position = Vector2(940, 570)
-
-[node name="EnemySpawnPath" type="Path2D" parent="Player"]
-position = Vector2(-940, -570)
-curve = SubResource("Curve2D_3qdtj")
-
-[node name="EnemySpawnPathFollow" type="PathFollow2D" parent="Player/EnemySpawnPath"]
-unique_name_in_owner = true
-position = Vector2(2083, -106)
-rotation = 1.56934
-
-[node name="PineTree" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(1527, 373)
-
-[node name="PineTree2" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(147, 195)
-
-[node name="PineTree3" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(266, 870)
-
-[node name="PineTree4" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(1541, 904)
-
-[node name="PineTree5" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(223, 529)
-
-[node name="PineTree6" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(569, 853)
-
-[node name="PineTree7" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(505, 272)
-
-[node name="PineTree8" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(621, 299)
-
-[node name="PineTree9" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(505, 358)
-
-[node name="PineTree10" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(1748, 491)
+[node name="TerrainGenerator" type="Node" parent="."]
+script = ExtResource("3_5wbav")
 
 [node name="BackgroundCanvas" type="CanvasLayer" parent="."]
 layer = -30
@@ -131,9 +92,9 @@ horizontal_alignment = 2
 vertical_alignment = 1
 script = ExtResource("4_g6miw")
 
-[node name="GunUI" type="CanvasLayer" parent="."]
+[node name="GunUICanvas" type="CanvasLayer" parent="."]
 
-[node name="BulletsLabel" type="Label" parent="GunUI"]
+[node name="BulletsLabel" type="Label" parent="GunUICanvas"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -149,7 +110,7 @@ text = "ASDASDADSW"
 vertical_alignment = 1
 script = ExtResource("6_p6o6b")
 
-[node name="RelodingLabel" type="Label" parent="GunUI"]
+[node name="RelodingLabel" type="Label" parent="GunUICanvas"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -168,6 +129,21 @@ theme_override_font_sizes/font_size = 44
 text = "RELOADING"
 vertical_alignment = 1
 script = ExtResource("8_47qkk")
+
+[node name="Player" parent="." groups=["player"] instance=ExtResource("1_jv7np")]
+position = Vector2(950.91, 525.01)
+
+[node name="EnemySpawnPath" type="Path2D" parent="Player"]
+position = Vector2(-945.91, -567.01)
+curve = SubResource("Curve2D_3qdtj")
+
+[node name="EnemySpawnPathFollow" type="PathFollow2D" parent="Player/EnemySpawnPath"]
+unique_name_in_owner = true
+position = Vector2(2083, -106)
+rotation = 1.56934
+
+[node name="PineTree" parent="." instance=ExtResource("2_c5nw3")]
+position = Vector2(960, 270)
 
 [connection signal="timeout" from="MobSpawner/EnemySpawnTimer" to="MobSpawner" method="_on_enemy_spawn_timer_timeout"]
 [connection signal="game_lost" from="GameManager" to="GameOverCanvas" method="_on_game_manager_game_lost"]
