@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=12 format=3 uid="uid://nc81yx2coj0l"]
 
 [ext_resource type="Script" path="res://scripts/mob_spawner.gd" id="1_as1ga"]
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gfc07"]
 [ext_resource type="Script" path="res://scripts/terrain_generator.gd" id="3_5wbav"]
 [ext_resource type="Script" path="res://scripts/fps_label.gd" id="4_g6miw"]
+[ext_resource type="Script" path="res://scripts/line-drawer.gd" id="4_y1v5o"]
 [ext_resource type="Script" path="res://scripts/game_over_canvas.gd" id="5_4moce"]
 [ext_resource type="Script" path="res://scripts/bullets_label.gd" id="6_p6o6b"]
 [ext_resource type="Script" path="res://scripts/reloding-label.gd" id="8_47qkk"]
@@ -29,8 +30,11 @@ wait_time = 0.3
 [node name="GameManager" type="Node" parent="." groups=["game_manager"]]
 script = ExtResource("2_gfc07")
 
-[node name="TerrainGenerator" type="Node" parent="."]
+[node name="TerrainGenerator" type="Node2D" parent="."]
 script = ExtResource("3_5wbav")
+
+[node name="LineDrawer" type="Node2D" parent="TerrainGenerator"]
+script = ExtResource("4_y1v5o")
 
 [node name="BackgroundCanvas" type="CanvasLayer" parent="."]
 layer = -30
