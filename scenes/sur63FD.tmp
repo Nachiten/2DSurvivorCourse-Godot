@@ -23,6 +23,30 @@ point_count = 5
 y_sort_enabled = true
 position = Vector2(9, 15)
 
+[node name="WavesManger" type="Node" parent="."]
+script = ExtResource("1_as1ga")
+
+[node name="MobSpawner" type="Node" parent="WavesManger"]
+script = ExtResource("2_tu3nh")
+
+[node name="EnemySpawnTimer" type="Timer" parent="WavesManger/MobSpawner"]
+wait_time = 0.3
+
+[node name="WaveSpaceTimer" type="Timer" parent="WavesManger"]
+wait_time = 5.0
+
+[node name="WavePrepareTimer" type="Timer" parent="WavesManger"]
+wait_time = 3.0
+
+[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
+script = ExtResource("2_gfc07")
+
+[node name="TerrainGenerator" type="Node2D" parent="."]
+script = ExtResource("3_5wbav")
+
+[node name="LineDrawer" type="Node2D" parent="TerrainGenerator"]
+script = ExtResource("4_y1v5o")
+
 [node name="WavesLabel" type="CanvasLayer" parent="."]
 
 [node name="WaveLabel" type="Label" parent="WavesLabel"]
@@ -47,32 +71,6 @@ script = ExtResource("5_1c5dn")
 unique_name_in_owner = true
 wait_time = 2.0
 one_shot = true
-
-[node name="WavesManger" type="Node" parent="."]
-script = ExtResource("1_as1ga")
-
-[node name="MobSpawner" type="Node" parent="WavesManger"]
-script = ExtResource("2_tu3nh")
-
-[node name="EnemySpawnTimer" type="Timer" parent="WavesManger/MobSpawner"]
-wait_time = 0.3
-
-[node name="WaveSpaceTimer" type="Timer" parent="WavesManger"]
-wait_time = 5.0
-one_shot = true
-
-[node name="WavePrepareTimer" type="Timer" parent="WavesManger"]
-wait_time = 3.0
-one_shot = true
-
-[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
-script = ExtResource("2_gfc07")
-
-[node name="TerrainGenerator" type="Node2D" parent="."]
-script = ExtResource("3_5wbav")
-
-[node name="LineDrawer" type="Node2D" parent="TerrainGenerator"]
-script = ExtResource("4_y1v5o")
 
 [node name="BackgroundCanvas" type="CanvasLayer" parent="."]
 layer = -30
@@ -187,11 +185,11 @@ rotation = 1.56934
 [node name="PineTree" parent="." instance=ExtResource("2_c5nw3")]
 position = Vector2(960, 270)
 
-[connection signal="timeout" from="WavesLabel/LabelHideTimer" to="WavesLabel/WaveLabel" method="_on_label_hide_timer_timeout"]
 [connection signal="wave_prepare" from="WavesManger" to="WavesLabel/WaveLabel" method="_on_waves_manger_wave_prepare"]
 [connection signal="wave_space" from="WavesManger" to="WavesLabel/WaveLabel" method="_on_waves_manger_wave_space"]
 [connection signal="wave_started" from="WavesManger" to="WavesLabel/WaveLabel" method="_on_waves_manger_wave_started"]
 [connection signal="timeout" from="WavesManger/WaveSpaceTimer" to="WavesManger" method="_on_wave_space_timer_timeout"]
 [connection signal="timeout" from="WavesManger/WavePrepareTimer" to="WavesManger" method="_on_wave_prepare_timer_timeout"]
 [connection signal="game_lost" from="GameManager" to="GameOverCanvas" method="_on_game_manager_game_lost"]
+[connection signal="timeout" from="WavesLabel/LabelHideTimer" to="WavesLabel/WaveLabel" method="_on_label_hide_timer_timeout"]
 [connection signal="health_depleted" from="Player" to="GameManager" method="_on_player_health_depleted"]
