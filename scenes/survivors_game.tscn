@@ -1,8 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=13 format=3 uid="uid://nc81yx2coj0l"]
 
 [ext_resource type="Script" path="res://scripts/waves_manager.gd" id="1_as1ga"]
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
-[ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://scenes/pine_tree.tscn" id="2_c5nw3"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gfc07"]
 [ext_resource type="Script" path="res://scripts/mob_spawner.gd" id="2_tu3nh"]
 [ext_resource type="Script" path="res://scripts/terrain_generator.gd" id="3_5wbav"]
@@ -20,12 +19,11 @@ _data = {
 point_count = 5
 
 [node name="Game" type="Node2D" groups=["root_scene"]]
-y_sort_enabled = true
 position = Vector2(9, 15)
 
-[node name="WavesLabel" type="CanvasLayer" parent="."]
+[node name="WavesLabelCanvas" type="CanvasLayer" parent="."]
 
-[node name="WaveLabel" type="Label" parent="WavesLabel"]
+[node name="WaveLabel" type="Label" parent="WavesLabelCanvas"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -43,36 +41,10 @@ text = "Starting Wave XXX"
 vertical_alignment = 1
 script = ExtResource("5_1c5dn")
 
-[node name="LabelHideTimer" type="Timer" parent="WavesLabel"]
+[node name="LabelHideTimer" type="Timer" parent="WavesLabelCanvas"]
 unique_name_in_owner = true
 wait_time = 2.0
 one_shot = true
-
-[node name="WavesManger" type="Node" parent="."]
-script = ExtResource("1_as1ga")
-
-[node name="MobSpawner" type="Node" parent="WavesManger"]
-script = ExtResource("2_tu3nh")
-
-[node name="EnemySpawnTimer" type="Timer" parent="WavesManger/MobSpawner"]
-wait_time = 0.3
-
-[node name="WaveSpaceTimer" type="Timer" parent="WavesManger"]
-wait_time = 5.0
-one_shot = true
-
-[node name="WavePrepareTimer" type="Timer" parent="WavesManger"]
-wait_time = 3.0
-one_shot = true
-
-[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
-script = ExtResource("2_gfc07")
-
-[node name="TerrainGenerator" type="Node2D" parent="."]
-script = ExtResource("3_5wbav")
-
-[node name="LineDrawer" type="Node2D" parent="TerrainGenerator"]
-script = ExtResource("4_y1v5o")
 
 [node name="BackgroundCanvas" type="CanvasLayer" parent="."]
 layer = -30
@@ -111,8 +83,8 @@ offset_bottom = 24.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 114
-text = "Game Over!!!
-You lost :("
+text = "GAME OVER!!
+YOU LOST D:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -172,26 +144,54 @@ text = "RELOADING"
 vertical_alignment = 1
 script = ExtResource("8_47qkk")
 
-[node name="Player" parent="." groups=["player"] instance=ExtResource("1_jv7np")]
+[node name="WavesManger" type="Node" parent="."]
+script = ExtResource("1_as1ga")
+
+[node name="MobSpawner" type="Node" parent="WavesManger"]
+script = ExtResource("2_tu3nh")
+
+[node name="EnemySpawnTimer" type="Timer" parent="WavesManger/MobSpawner"]
+
+[node name="WaveSpaceTimer" type="Timer" parent="WavesManger"]
+wait_time = 5.0
+one_shot = true
+
+[node name="WavePrepareTimer" type="Timer" parent="WavesManger"]
+wait_time = 3.0
+one_shot = true
+
+[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
+script = ExtResource("2_gfc07")
+
+[node name="TerrainGenerator" type="Node" parent="."]
+script = ExtResource("3_5wbav")
+
+[node name="LineDrawer" type="Node2D" parent="TerrainGenerator"]
+script = ExtResource("4_y1v5o")
+
+[node name="Environment" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Environment" groups=["player"] instance=ExtResource("1_jv7np")]
 position = Vector2(950.91, 525.01)
 
-[node name="EnemySpawnPath" type="Path2D" parent="Player"]
+[node name="EnemySpawnPath" type="Path2D" parent="Environment/Player"]
 position = Vector2(-945.91, -567.01)
 curve = SubResource("Curve2D_3qdtj")
 
-[node name="EnemySpawnPathFollow" type="PathFollow2D" parent="Player/EnemySpawnPath"]
+[node name="EnemySpawnPathFollow" type="PathFollow2D" parent="Environment/Player/EnemySpawnPath"]
 unique_name_in_owner = true
 position = Vector2(2083, -106)
 rotation = 1.56934
 
-[node name="PineTree" parent="." instance=ExtResource("2_c5nw3")]
-position = Vector2(960, 270)
-
-[connection signal="timeout" from="WavesLabel/LabelHideTimer" to="WavesLabel/WaveLabel" method="_on_label_hide_timer_timeout"]
-[connection signal="wave_prepare" from="WavesManger" to="WavesLabel/WaveLabel" method="_on_waves_manger_wave_prepare"]
-[connection signal="wave_space" from="WavesManger" to="WavesLabel/WaveLabel" method="_on_waves_manger_wave_space"]
-[connection signal="wave_started" from="WavesManger" to="WavesLabel/WaveLabel" method="_on_waves_manger_wave_started"]
+[connection signal="timeout" from="WavesLabelCanvas/LabelHideTimer" to="WavesLabelCanvas/WaveLabel" method="_on_label_hide_timer_timeout"]
+[connection signal="wave_prepare" from="WavesManger" to="WavesLabelCanvas/WaveLabel" method="_on_waves_manger_wave_prepare"]
+[connection signal="wave_space" from="WavesManger" to="WavesLabelCanvas/WaveLabel" method="_on_waves_manger_wave_space"]
+[connection signal="wave_started" from="WavesManger" to="WavesLabelCanvas/WaveLabel" method="_on_waves_manger_wave_started"]
+[connection signal="wave_started" from="WavesManger" to="WavesManger/MobSpawner" method="_on_waves_manger_wave_started"]
+[connection signal="round_ended" from="WavesManger/MobSpawner" to="WavesManger" method="_on_mob_spawner_round_ended"]
+[connection signal="timeout" from="WavesManger/MobSpawner/EnemySpawnTimer" to="WavesManger/MobSpawner" method="_on_enemy_spawn_timer_timeout"]
 [connection signal="timeout" from="WavesManger/WaveSpaceTimer" to="WavesManger" method="_on_wave_space_timer_timeout"]
 [connection signal="timeout" from="WavesManger/WavePrepareTimer" to="WavesManger" method="_on_wave_prepare_timer_timeout"]
 [connection signal="game_lost" from="GameManager" to="GameOverCanvas" method="_on_game_manager_game_lost"]
-[connection signal="health_depleted" from="Player" to="GameManager" method="_on_player_health_depleted"]
+[connection signal="health_depleted" from="Environment/Player" to="GameManager" method="_on_player_health_depleted"]

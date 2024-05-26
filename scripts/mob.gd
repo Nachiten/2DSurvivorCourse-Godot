@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 var health = 3
 
+signal mob_killed
+
 @onready var player: Node2D = get_tree().get_first_node_in_group("player")
 @onready var slime: Node2D = %Slime
 
@@ -24,3 +26,5 @@ func take_damage():
 		var smoke = SMOKE_SCENE.instantiate()
 		get_parent().add_child(smoke)
 		smoke.global_position = global_position
+
+		mob_killed.emit()

@@ -1,13 +1,17 @@
-extends Node2D
+extends Node
 
 @onready var pine_tree = preload("res://scenes/pine_tree.tscn")
 @onready var chunk_label = preload("res://scenes/chunk_label.tscn")
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var line_drawer = get_node("./LineDrawer")
+@onready var trees_parent = $"../Environment"
 
-var chunkSize = Vector2(DisplayServer.window_get_size())
-var current_chunk = null
+var chunk_size = Vector2(DisplayServer.window_get_size())
+var current_chunk: Vector2 = Vector2(-200,-200)
 var explored_chunks: Array[Vector2] = []
+
+const CHUNK_TREE_AMOUNT = 15
+const CHUNK_MARGIN = Vector2(10, 10)
 
 func _process(_delta):
 	var new_chunk = position_to_chunk(player.position)
@@ -21,7 +25,6 @@ func generate_chunk_and_neighbors(center_chunk: Vector2):
 	for x in range(-1, 2):
 		for y in range(-1, 2):
 			generate_chunk(center_chunk + Vector2(x, y))
-	# print("---------------")
 
 func generate_chunk(chunk: Vector2):
 	if chunk_is_explored(chunk):
@@ -32,17 +35,16 @@ func generate_chunk(chunk: Vector2):
 	explored_chunks.append(chunk)
 
 	var chunk_coords = chunk_to_position(chunk)
-	var offset = Vector2(50, 50)
 
-	var top_left_corner = chunk_coords + offset
-	var bottom_right_corner = chunk_coords + chunkSize - offset
+	var top_left_corner = chunk_coords + CHUNK_MARGIN
+	var bottom_right_corner = chunk_coords + chunk_size - CHUNK_MARGIN
 
-	for i in range(15):
-		var randomPos = Vector2(randf_range(top_left_corner.x, bottom_right_corner.x),
+	for i in range(CHUNK_TREE_AMOUNT):
+		var random_pos = Vector2(randf_range(top_left_corner.x, bottom_right_corner.x),
 								randf_range(top_left_corner.y, bottom_right_corner.y))
-		add_tree(randomPos)
+		add_tree(random_pos, chunk, i)
 
-	#debug_stuff(top_left_corner, bottom_right_corner, chunk)
+	debug_stuff(top_left_corner, bottom_right_corner, chunk)
 
 func debug_stuff(top_left_corner, bottom_right_corner, chunk):
 	line_drawer.add_line_from_to(top_left_corner, Vector2(top_left_corner.x, bottom_right_corner.y))
@@ -56,16 +58,17 @@ func debug_stuff(top_left_corner, bottom_right_corner, chunk):
 	chunk_label_instance.text = "(%s, %s)" % [chunk.x, chunk.y]
 	add_child(chunk_label_instance)
 
-func add_tree(_position):
+func add_tree(_position, _chunk, index):
 	var tree = pine_tree.instantiate()
 	tree.position = Vector2(_position.x, _position.y)
-	add_child(tree)
+	tree.name = "(%s, %s) - %s" % [_chunk.x, _chunk.y, index]
+	trees_parent.add_child(tree)
 
 func position_to_chunk(_position):
-	return Vector2(floor(_position.x / chunkSize.x), floor(_position.y / chunkSize.y))
+	return Vector2(floor(_position.x / chunk_size.x), floor(_position.y / chunk_size.y))
 
 func chunk_to_position(chunk):
-	return Vector2(chunk.x * chunkSize.x, chunk.y * chunkSize.y)
+	return Vector2(chunk.x * chunk_size.x, chunk.y * chunk_size.y)
 
 func chunk_is_explored(chunk):
 	return explored_chunks.find(chunk) != -1
