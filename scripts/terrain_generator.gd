@@ -8,6 +8,8 @@ extends Node
 @onready var line_drawer = $LineDrawer
 @onready var trees_parent = $"../Environment"
 
+@onready var nav_region = $"../NavigationRegion2D"
+
 var chunk_size: Vector2 = Vector2(DisplayServer.window_get_size())
 var current_chunk: Vector2 = Vector2(-200,-200)
 var explored_chunks: Array[Vector2] = []
@@ -48,6 +50,8 @@ func generate_chunk(chunk: Vector2):
 
 	debug_stuff(top_left_corner, bottom_right_corner, chunk)
 
+	nav_region.bake_navigation_polygon()
+
 func debug_stuff(top_left_corner, bottom_right_corner, chunk):
 	line_drawer.add_line_from_to(top_left_corner, Vector2(top_left_corner.x, bottom_right_corner.y))
 	line_drawer.add_line_from_to(top_left_corner, Vector2(bottom_right_corner.x, top_left_corner.y))
@@ -64,7 +68,7 @@ func add_tree(_position, _chunk, index):
 	var tree = pine_tree.instantiate()
 	tree.position = Vector2(_position.x, _position.y)
 	tree.name = "(%s, %s) - %s" % [_chunk.x, _chunk.y, index]
-	trees_parent.add_child(tree)
+	nav_region.add_child(tree)
 
 func position_to_chunk(_position):
 	return Vector2(floor(_position.x / chunk_size.x), floor(_position.y / chunk_size.y))

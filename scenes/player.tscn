@@ -4,9 +4,6 @@
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_eopgq"]
 [ext_resource type="PackedScene" uid="uid://67unvp0ej8yc" path="res://scenes/gun.tscn" id="3_7u33q"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_k84ts"]
-radius = 30.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_ls8we"]
 radius = 34.1321
 
@@ -24,6 +21,9 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_k84ts"]
+radius = 30.0
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("gun")]
 platform_floor_layers = 0
 script = ExtResource("1_eopgq")
@@ -32,9 +32,6 @@ gun = NodePath("Gun")
 
 [node name="HappyBoo" parent="." instance=ExtResource("1_5msd7")]
 unique_name_in_owner = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_k84ts")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)
@@ -61,3 +58,6 @@ theme_override_styles/background = SubResource("StyleBoxFlat_8hfs2")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ijfca")
 value = 100.0
 show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_k84ts")

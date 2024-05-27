@@ -7,12 +7,25 @@ signal mob_killed
 @onready var player: Node2D = get_tree().get_first_node_in_group("player")
 @onready var slime: Node2D = %Slime
 
+@onready var nav: NavigationAgent2D = $NavigationAgent2D
+
+const SPEED = 300
+var ACCELERATION = 7
+
 func _ready():
 	slime.play_walk()
 
-func _physics_process(_delta):
-	var direction = global_position.direction_to(player.global_position)
-	velocity = direction * 300.0
+func _physics_process(delta: float) -> void:
+	nav.target_position = player.global_position
+
+	var target = nav.get_next_path_position()
+	var pos = get_global_transform().origin
+
+	var direction = (target - pos).normalized()
+	# var _velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
+
+	nav.set_velocity(direction * SPEED)
+
 	move_and_slide()
 
 func take_damage():
@@ -28,3 +41,6 @@ func take_damage():
 		smoke.global_position = global_position
 
 		mob_killed.emit()
+
+func _on_navigation_agent_2d_velocity_computed(safe_velocity):
+	velocity = safe_velocity
