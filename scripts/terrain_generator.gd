@@ -2,11 +2,13 @@ extends Node
 
 @onready var pine_tree = preload("res://scenes/pine_tree.tscn")
 @onready var chunk_label = preload("res://scenes/chunk_label.tscn")
+
 @onready var player = get_tree().get_first_node_in_group("player")
-@onready var line_drawer = get_node("./LineDrawer")
+
+@onready var line_drawer = $LineDrawer
 @onready var trees_parent = $"../Environment"
 
-var chunk_size = Vector2(DisplayServer.window_get_size())
+var chunk_size: Vector2 = Vector2(DisplayServer.window_get_size())
 var current_chunk: Vector2 = Vector2(-200,-200)
 var explored_chunks: Array[Vector2] = []
 
