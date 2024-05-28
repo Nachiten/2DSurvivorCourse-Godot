@@ -4,11 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://ogik4s70pgwl" path="res://characters/slime/slime.tscn" id="2_hprta"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_to6ui"]
-radius = 54.0
+radius = 50.0
 
 [node name="Mob" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
+motion_mode = 1
+wall_min_slide_angle = 0.0174533
 platform_floor_layers = 0
 script = ExtResource("1_37hm1")
 
@@ -20,9 +22,6 @@ position = Vector2(0, -28)
 shape = SubResource("CircleShape2D_to6ui")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-avoidance_enabled = true
-radius = 30.0
-neighbor_distance = 200.0
 debug_enabled = true
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]

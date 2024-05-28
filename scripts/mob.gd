@@ -19,12 +19,10 @@ func _physics_process(delta: float) -> void:
 	nav.target_position = player.global_position
 
 	var target = nav.get_next_path_position()
-	var pos = get_global_transform().origin
+	var origin = global_position
+	var direction = (target - origin).normalized()
 
-	var direction = (target - pos).normalized()
-	# var _velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
-
-	nav.set_velocity(direction * SPEED)
+	velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
 
 	move_and_slide()
 

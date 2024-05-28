@@ -29,6 +29,7 @@ func generate_chunk_and_neighbors(center_chunk: Vector2):
 	for x in range(-1, 2):
 		for y in range(-1, 2):
 			generate_chunk(center_chunk + Vector2(x, y))
+	nav_region.bake_navigation_polygon()
 
 func generate_chunk(chunk: Vector2):
 	if chunk_is_explored(chunk):
@@ -49,8 +50,6 @@ func generate_chunk(chunk: Vector2):
 		add_tree(random_pos, chunk, i)
 
 	debug_stuff(top_left_corner, bottom_right_corner, chunk)
-
-	nav_region.bake_navigation_polygon()
 
 func debug_stuff(top_left_corner, bottom_right_corner, chunk):
 	line_drawer.add_line_from_to(top_left_corner, Vector2(top_left_corner.x, bottom_right_corner.y))

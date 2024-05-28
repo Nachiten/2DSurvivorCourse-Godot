@@ -17,8 +17,9 @@
 vertices = PackedVector2Array(1857, 31, 1857, 1008, 376, 456, 366, 416, 366, 496, 48, 1014, 337, 525, 297, 535, 257, 525, 47, 41, 337, 387, 297, 377, 257, 387, 228, 416, 218, 456, 228, 496)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 2, 1), PackedInt32Array(4, 1, 5, 6), PackedInt32Array(7, 6, 5), PackedInt32Array(8, 7, 5), PackedInt32Array(9, 0, 3, 10), PackedInt32Array(9, 10, 11), PackedInt32Array(9, 11, 12), PackedInt32Array(9, 12, 13), PackedInt32Array(5, 9, 13, 14), PackedInt32Array(5, 14, 15), PackedInt32Array(8, 5, 15)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-7, -12, -5, 1069, 1911, 1062, 1911, -23)])
+parsed_geometry_type = 1
 source_geometry_group_name = &"navigation_polygon_source_group"
-agent_radius = 56.0
+agent_radius = 50.0
 
 [sub_resource type="Curve2D" id="Curve2D_3qdtj"]
 _data = {
@@ -152,8 +153,12 @@ text = "RELOADING"
 vertical_alignment = 1
 script = ExtResource("8_47qkk")
 
+[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
+script = ExtResource("2_gfc07")
+
 [node name="WavesManger" type="Node" parent="."]
 script = ExtResource("1_as1ga")
+debug = true
 
 [node name="MobSpawner" type="Node" parent="WavesManger"]
 script = ExtResource("2_tu3nh")
@@ -167,9 +172,6 @@ one_shot = true
 [node name="WavePrepareTimer" type="Timer" parent="WavesManger"]
 wait_time = 3.0
 one_shot = true
-
-[node name="GameManager" type="Node" parent="." groups=["game_manager"]]
-script = ExtResource("2_gfc07")
 
 [node name="TerrainGenerator" type="Node" parent="."]
 script = ExtResource("3_5wbav")
@@ -188,6 +190,7 @@ y_sort_enabled = true
 
 [node name="Player" parent="Environment" groups=["player"] instance=ExtResource("1_jv7np")]
 position = Vector2(950.91, 525.01)
+damage_enabled = false
 
 [node name="EnemySpawnPath" type="Path2D" parent="Environment/Player"]
 position = Vector2(-945.91, -567.01)
@@ -199,6 +202,7 @@ position = Vector2(2083, -106)
 rotation = 1.56934
 
 [connection signal="timeout" from="WavesLabelCanvas/LabelHideTimer" to="WavesLabelCanvas/WaveLabel" method="_on_label_hide_timer_timeout"]
+[connection signal="game_lost" from="GameManager" to="GameOverCanvas" method="_on_game_manager_game_lost"]
 [connection signal="wave_prepare" from="WavesManger" to="WavesLabelCanvas/WaveLabel" method="_on_waves_manger_wave_prepare"]
 [connection signal="wave_space" from="WavesManger" to="WavesLabelCanvas/WaveLabel" method="_on_waves_manger_wave_space"]
 [connection signal="wave_started" from="WavesManger" to="WavesLabelCanvas/WaveLabel" method="_on_waves_manger_wave_started"]
@@ -207,5 +211,4 @@ rotation = 1.56934
 [connection signal="timeout" from="WavesManger/MobSpawner/EnemySpawnTimer" to="WavesManger/MobSpawner" method="_on_enemy_spawn_timer_timeout"]
 [connection signal="timeout" from="WavesManger/WaveSpaceTimer" to="WavesManger" method="_on_wave_space_timer_timeout"]
 [connection signal="timeout" from="WavesManger/WavePrepareTimer" to="WavesManger" method="_on_wave_prepare_timer_timeout"]
-[connection signal="game_lost" from="GameManager" to="GameOverCanvas" method="_on_game_manager_game_lost"]
 [connection signal="health_depleted" from="Environment/Player" to="GameManager" method="_on_player_health_depleted"]

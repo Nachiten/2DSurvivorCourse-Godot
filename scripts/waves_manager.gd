@@ -1,5 +1,8 @@
 extends Node
 
+@export var state: WaveState
+@export var debug: bool = false
+
 signal wave_space(wave)
 signal wave_prepare(wave)
 signal wave_started(wave)
@@ -14,10 +17,14 @@ enum WaveState { WAVE_SPACE, WAVE_PREPARE, WAVE_STARTED }
 # When wave ends, state goes back to WAVE_SPACE and the cycle restarts
 # Wave ends when MobSpawner signals that all mobs were killed
 
-@export var state: WaveState
 var wave = 0
 
 func _ready():
+	if debug:
+		push_warning("[DEBUG] debug = true")
+		wave_space_timer.wait_time = 1
+		wave_prepare_timer.wait_time = 1
+
 	end_current_wave()
 
 func end_current_wave():
