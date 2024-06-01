@@ -9,7 +9,7 @@ signal mob_killed
 
 @onready var nav: NavigationAgent2D = $NavigationAgent2D
 
-const SPEED = 300
+const SPEED = 200
 var ACCELERATION = 7
 
 func _ready():
@@ -22,9 +22,11 @@ func _physics_process(delta: float) -> void:
 	var origin = global_position
 	var direction = (target - origin).normalized()
 
-	velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
+	var intended_velocity = direction * SPEED
+	nav.set_velocity(intended_velocity)
 
-	move_and_slide()
+	# velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
+	# move_and_slide()
 
 func take_damage():
 	health -= 1
@@ -42,3 +44,4 @@ func take_damage():
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
 	velocity = safe_velocity
+	move_and_slide()

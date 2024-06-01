@@ -8,7 +8,7 @@ signal round_ended
 # spawn_timer: float
 # spawn_amount: int
 var waves: Array[Wave] = [
-	Wave.new(1.5, 10),
+	Wave.new(.5, 30),
 	Wave.new(1.4, 12),
 	Wave.new(1.3, 14),
 	Wave.new(1.2, 16),
