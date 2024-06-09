@@ -15,7 +15,7 @@ var ACCELERATION = 7
 func _ready():
 	slime.play_walk()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	nav.target_position = player.global_position
 
 	var target = nav.get_next_path_position()
@@ -24,9 +24,6 @@ func _physics_process(delta: float) -> void:
 
 	var intended_velocity = direction * SPEED
 	nav.set_velocity(intended_velocity)
-
-	# velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
-	# move_and_slide()
 
 func take_damage():
 	health -= 1

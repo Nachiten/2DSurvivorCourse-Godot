@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://nc81yx2coj0l"]
+[gd_scene load_steps=13 format=3 uid="uid://nc81yx2coj0l"]
 
 [ext_resource type="Script" path="res://scripts/waves_manager.gd" id="1_as1ga"]
 [ext_resource type="PackedScene" uid="uid://c3xht3flbe3cb" path="res://scenes/player.tscn" id="1_jv7np"]
@@ -11,15 +11,6 @@
 [ext_resource type="Script" path="res://scripts/game_over_canvas.gd" id="5_4moce"]
 [ext_resource type="Script" path="res://scripts/bullets_label.gd" id="6_p6o6b"]
 [ext_resource type="Script" path="res://scripts/reloding_label.gd" id="8_47qkk"]
-[ext_resource type="PackedScene" uid="uid://duirvmlqwemi7" path="res://scenes/pine_tree.tscn" id="11_hot0v"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_soixe"]
-vertices = PackedVector2Array(1857, 31, 1857, 1008, 376, 456, 366, 416, 366, 496, 48, 1014, 337, 525, 297, 535, 257, 525, 47, 41, 337, 387, 297, 377, 257, 387, 228, 416, 218, 456, 228, 496)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 2, 1), PackedInt32Array(4, 1, 5, 6), PackedInt32Array(7, 6, 5), PackedInt32Array(8, 7, 5), PackedInt32Array(9, 0, 3, 10), PackedInt32Array(9, 10, 11), PackedInt32Array(9, 11, 12), PackedInt32Array(9, 12, 13), PackedInt32Array(5, 9, 13, 14), PackedInt32Array(5, 14, 15), PackedInt32Array(8, 5, 15)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-7, -12, -5, 1069, 1911, 1062, 1911, -23)])
-parsed_geometry_type = 1
-source_geometry_group_name = &"navigation_polygon_source_group"
-agent_radius = 50.0
 
 [sub_resource type="Curve2D" id="Curve2D_3qdtj"]
 _data = {
@@ -178,12 +169,6 @@ script = ExtResource("3_5wbav")
 
 [node name="LineDrawer" type="Node2D" parent="TerrainGenerator"]
 script = ExtResource("4_y1v5o")
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_soixe")
-
-[node name="PineTree" parent="NavigationRegion2D" instance=ExtResource("11_hot0v")]
-position = Vector2(297, 456)
 
 [node name="Environment" type="Node2D" parent="."]
 y_sort_enabled = true
