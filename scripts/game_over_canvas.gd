@@ -1,7 +1,7 @@
 extends CanvasLayer
 
-func _ready():
+func _ready() -> void:
 	visible = false
 
-func _on_game_manager_game_lost():
+func _on_game_manager_game_lost() -> void:
 	visible = true

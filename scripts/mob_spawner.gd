@@ -1,9 +1,15 @@
 extends Node
 
-@onready var enemy_path_follow = %EnemySpawnPathFollow
-@onready var enemy_spawn_timer = $EnemySpawnTimer
+@export var spawns_remaining: int
+@export var mobs_killed: int
+
+@onready var enemy_path_follow: PathFollow2D = %EnemySpawnPathFollow
+@onready var enemy_spawn_timer: Timer = $EnemySpawnTimer
 
 signal round_ended
+
+const MOB: PackedScene = preload("res://scenes/mob.tscn")
+var current_wave: Wave
 
 # spawn_timer: float
 # spawn_amount: int
@@ -20,11 +26,7 @@ var waves: Array[Wave] = [
 	Wave.new(0.6, 28),
 ]
 
-var current_wave: Wave
-@export var spawns_remaining: int
-@export var mobs_killed: int
-
-func start_wave(wave):
+func start_wave(wave: int) -> void:
 	current_wave = waves[wave - 1]
 
 	spawns_remaining = current_wave.spawn_amount
@@ -33,8 +35,8 @@ func start_wave(wave):
 	enemy_spawn_timer.wait_time = current_wave.spawn_timer
 	enemy_spawn_timer.start()
 
-func spawn_mob():
-	var new_mob = preload("res://scenes/mob.tscn").instantiate()
+func spawn_mob() -> void:
+	var new_mob: CharacterBody2D = MOB.instantiate()
 
 	enemy_path_follow.progress_ratio = randf()
 	new_mob.global_position = enemy_path_follow.global_position
@@ -42,18 +44,19 @@ func spawn_mob():
 
 	new_mob.mob_killed.connect(_on_mob_killed)
 
-func _on_enemy_spawn_timer_timeout():
+func _on_enemy_spawn_timer_timeout() -> void:
 	print("Spawning mob")
 	spawn_mob()
 	spawns_remaining -= 1
 	print("Spawns remaining: %s" % spawns_remaining)
+
 	if spawns_remaining == 0:
 		enemy_spawn_timer.stop()
 
-func _on_waves_manger_wave_started(wave):
+func _on_waves_manger_wave_started(wave: int) -> void:
 	start_wave(wave)
 
-func _on_mob_killed():
+func _on_mob_killed() -> void:
 	mobs_killed += 1
 
 	if mobs_killed == current_wave.spawn_amount:
